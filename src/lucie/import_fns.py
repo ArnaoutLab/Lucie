@@ -434,6 +434,12 @@ def is_archive(file_path):
     return any(file_path.lower().endswith(ext) for ext in archive_extensions)
 
 def read_csv(file, header=None, delimiter=None):
+    if delimiter is None:
+        try:
+            return pd.read_csv(file, header=header, delimiter=delimiter)
+        except:
+            pass
+    
     largest_col_cnt = 0
 
     with open(file, 'r') as temp_f:
@@ -446,7 +452,7 @@ def read_csv(file, header=None, delimiter=None):
 
     col_names = [i for i in range(0, largest_col_cnt)]
 
-    return pd.read_csv(file, header=None, delimiter=delimiter, names=col_names)
+    return pd.read_csv(file, header=header, delimiter=delimiter, names=col_names)
 
 def try_json_extraction(archive, name_list=None):
     """
