@@ -47,9 +47,9 @@ fetch_ucirepo(name='eeg')
 
 # delete arrhythmia so that we can trigger the download script
 import shutil
-if os.path.exists('extracted_files')
+if os.path.exists('extracted_files'):
     shutil.rmtree('extracted_files')
-if os.path.exists('arrhythmia.zip')
+if os.path.exists('arrhythmia.zip'):
     os.remove('arrhythmia.zip')
 fetch_ucirepo(id=5) # arrhythmia
 fetch_ucirepo(id=113) # twenty newsgroups
