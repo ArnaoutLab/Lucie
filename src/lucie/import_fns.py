@@ -539,7 +539,7 @@ def read_gz_as_csv(gz_path):
 
 def special_case_download(name):
     if name == 'movie':
-        base_url = 'https://raw.githubusercontent.com/cernoch/movies/master/data/'
+        base_url = 'https://cdn.jsdelivr.net/gh/cernoch/movies@latest/data'
         files = [
             'actors.csv',
             'casts.csv',
@@ -551,13 +551,13 @@ def special_case_download(name):
         ]
         delim=None
     elif name == 'diabetes':
-        base_url = 'https://raw.githubusercontent.com/kenneth-ge/UCI-Import/main/manually_cleaned/diabetes'
+        base_url = 'https://cdn.jsdelivr.net/gh/kenneth-ge/UCI-Import@latest/manually_cleaned/diabetes'
         files = [
             'diabetes_complete.tsv'
         ]
         delim='\t'
     elif name == 'reuters':
-        base_url = 'https://raw.githubusercontent.com/kenneth-ge/UCI-Import/main/manually_cleaned/reuters'
+        base_url = 'https://cdn.jsdelivr.net/gh/kenneth-ge/UCI-Import@latest/manually_cleaned/reuters'
         files = [
             'reuters_hayes_test.csv',
             'reuters_hayes_train.csv',
