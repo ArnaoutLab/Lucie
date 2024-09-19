@@ -1,0 +1,22 @@
+[project]
+name = "lucie"
+version = "1.0.0"
+authors = [
+  { name="Kenneth Ge", email="kennethkouge@gmail.com" },
+]
+description = "A package that will automatically determine the dataset scheme/format for a UCI dataset, and import it to the best of its ability. Preserves the UCI Python import API. Please see https://github.com/ArnaoutLab/Lucie"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/ArnaoutLab/Lucie"
+Issues = "https://github.com/ArnaoutLab/Lucie/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
