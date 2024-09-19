@@ -7,7 +7,9 @@ Preserves the UCIML API to the best of its ability, with one minor change (see b
 Succeeds on around 83% of datasets with valid download links, and includes manually cleaned datasets to allow all top 100 datasets to be imported. 
 
 GitHub: https://github.com/ArnaoutLab/Lucie
+
 PyPI Package:
+
 ArXiV Paper: 
 
 ## Usage and API Changes
@@ -15,48 +17,57 @@ ArXiV Paper:
 For previously importable datasets, we have one minor change: instead of returning the dataset itself, this program will return a tuple, with the first element indicating the dataset format, and the second representing the dataset. 
 
 Example:
-<pre lang="python">
+```python
 from lucie import fetch_ucirepo 
-  
+```
+```diff
 # fetch dataset 
-iris = fetch_ucirepo(id=53)<span style="color:red;">[1]</span>
-  
+- iris = fetch_ucirepo(id=53)
++ iris = fetch_ucirepo(id=53)[1]
+```
+```python
 # data (as pandas dataframes) 
 X = iris.data.features 
 y = iris.data.targets 
   
 # metadata 
 print(iris.metadata) 
-  
+
 # variable information 
 print(iris.variables) 
-</pre>
+```
 
 For datasets that were previously not importable, but are importable via `lucie`, we return a dictionary, with keys representing filenames and values representing the associated Pandas dataframe. For example:
 
 ```python
 from lucie import fetch_ucirepo
-arrhythmia = fetch_ucirepo(id=5)
-print('arrhythmia')
+diabetes = fetch_ucirepo(name='diabetes')
+print(diabetes)
 
 """
 output is:
 ('custom',
- {'arrhythmia.data':                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      0 75 0 190 80 91 193 371 174 121.....
-  ...
+ {'diabetes_complete.tsv':
+  0      04-21-1991   9:09  33  009
+  1      04-21-1991   9:09  34  013
+  2      04-21-1991  17:08  62  119
+  3      04-21-1991  17:08  33  007
   ...
  }
 )
 """
 
-print(arrythmia[1]['arrhythmia.data'])
+print(diabetes[1]['diabetes_complete.tsv'])
 
 """
 output is:
-75 0 190 80 91 ...
-56 1 165 64 81 ...
-54 0 172 95 138...
-.. .. .. .. ..
+0      04-21-1991   9:09  33  009
+1      04-21-1991   9:09  34  013
+2      04-21-1991  17:08  62  119
+3      04-21-1991  17:08  33  007
+4      04-21-1991  22:51  48  123
+...    ...          ...   .. ...
+[29329 rows x 4 columns]
 """
 ```
 
