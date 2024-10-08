@@ -4,11 +4,11 @@ A Python package that will automatically import un-importable datasets on the UC
 
 Preserves the UCIML API to the best of its ability, with one minor change (see below). 
 
-Succeeds on around 83% of datasets with valid download links, and includes manually cleaned datasets to allow all top 100 datasets to be imported. 
+Succeeds on 95.4% of the top 250 datasets, and includes manually cleaned datasets to allow all top 100 datasets to be imported. 
 
 GitHub: https://github.com/ArnaoutLab/Lucie
 
-PyPI Package:
+PyPI Package: `pip install lucie`
 
 ArXiV Paper: 
 

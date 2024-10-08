@@ -1,8 +1,10 @@
 [project]
 name = "lucie"
-version = "1.0.0"
+version = "1.0.2"
 authors = [
   { name="Kenneth Ge", email="kennethkouge@gmail.com" },
+  { name="Phuc Nguyen", email="pnguye10@bidmc.harvard.edu" },
+  { name="Ramy Arnaout", email="rarnaout@bidmc.harvard.edu" },
 ]
 description = "A package that will automatically determine the dataset scheme/format for a UCI dataset, and import it to the best of its ability. Preserves the UCI Python import API. Please see https://github.com/ArnaoutLab/Lucie"
 readme = "README.md"
