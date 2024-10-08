@@ -1,6 +1,6 @@
 # Lucie
 
-A Python package that will automatically import un-importable datasets on the UCI ML repository, by using heuristics to figure out how each dataset is likely to be laid out. Our package name "Lucie" is inspired by its function: loading UCI repos
+A Python package that will automatically import un-importable datasets on the UCI ML repository, by using heuristics to figure out how each dataset is likely to be laid out. Our package name "Lucie" is inspired by its function: loading UCI examples
 
 Preserves the UCIML API to the best of its ability, with one minor change (see below). 
 
