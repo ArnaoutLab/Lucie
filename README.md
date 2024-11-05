@@ -10,7 +10,7 @@ GitHub: https://github.com/ArnaoutLab/Lucie
 
 PyPI Package: `pip install lucie`
 
-ArXiV Paper: 
+ArXiV Paper: https://arxiv.org/abs/2410.09119
 
 ## Usage and API Changes
 
