@@ -44,7 +44,7 @@ In our own work, we noticed that many of the problematic datasets, although diff
 
 ## Code and Datasets
 
-![The 100 most popular UCIMLR datasets, ordered by number of views and presented using a log10 scale. Green=datasets that *ucimlrepo* successfully imports; red=*ucimlrepo* failures. The UCIMLR ID# is displayed along with the name and rank. Note the correlation between success and popularity (more red bars toward the bottom).\label{fig:datasets}](./thedatasetsbyviews.pdf){height=150}
+![The 100 most popular UCIMLR datasets, ordered by number of views and presented using a log10 scale. Green=datasets that *ucimlrepo* successfully imports; red=*ucimlrepo* failures. The UCIMLR ID# is displayed along with the name and rank. Note the correlation between success and popularity (more red bars toward the bottom).\label{fig:datasets}](./thedatasetsbyviews.pdf){width=150}
 
 *ucimlrepo* version 0.0.7 was installed using pip (`pip install ucimlrepo`). We determined dataset popularity rankings based on the results given by the "sort by num views, desc" criteria on the UCIMLR (accessed August 26, 2024). After saving these results, we attempted to import each of the top 100 using *ucimlrepo*. This identified 16 that were non-importable: UCMLR IDs #5, 34, 51, 102, 113, 121, 125, 132, 137, 228, 236, 240, 280, 321, 331, and 502 (alphabetically).
 
