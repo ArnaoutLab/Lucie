@@ -44,7 +44,7 @@ In our own work, we noticed that many of the problematic datasets, although diff
 
 ## Code and Datasets
 
-![The 100 most popular UCIMLR datasets, ordered by number of views and presented using a log10 scale. Green=datasets that *ucimlrepo* successfully imports; red=*ucimlrepo* failures. The UCIMLR ID# is displayed along with the name and rank. Note the correlation between success and popularity (more red bars toward the bottom).\label{fig:datasets}](./thedatasetsbyviews.pdf)
+![The 100 most popular UCIMLR datasets, ordered by number of views and presented using a log10 scale. Green=datasets that *ucimlrepo* successfully imports; red=*ucimlrepo* failures. The UCIMLR ID# is displayed along with the name and rank. Note the correlation between success and popularity (more red bars toward the bottom).\label{fig:datasets}](./thedatasetsbyviews.pdf){height=0.7}
 
 *ucimlrepo* version 0.0.7 was installed using pip (`pip install ucimlrepo`). We determined dataset popularity rankings based on the results given by the "sort by num views, desc" criteria on the UCIMLR (accessed August 26, 2024). After saving these results, we attempted to import each of the top 100 using *ucimlrepo*. This identified 16 that were non-importable: UCMLR IDs #5, 34, 51, 102, 113, 121, 125, 132, 137, 228, 236, 240, 280, 321, 331, and 502 (alphabetically).
 
@@ -89,7 +89,7 @@ The flow chart in Fig.\autoref{fig:algorithm} provides a more comprehensive view
 
 # Availability
 
-*lucie* is available via PyPI (`pip install lucie`) and on GitHub at https://github.com/ArnaoutLab/lucie. Forks and contributions are welcome. 
+*lucie* is available via PyPI (`pip install lucie`) and on GitHub at [https://github.com/ArnaoutLab/lucie](https://github.com/ArnaoutLab/lucie). Forks and contributions are welcome. 
 
 # Results
 
@@ -116,5 +116,9 @@ Future work could analyze the test set more closely, since the analysis of the s
 # Conflict of Interest
 
 The authors declare that they have no conflict of interest.
+
+# Acknowledgements
+
+This work was supported by the Gordon and Betty Moore Foundation and by the NIH under grants R01HL150394, R01HL150394-SI, R01AI148747, and R01AI148747-SI.
 
 # References
