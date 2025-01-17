@@ -121,4 +121,12 @@ The authors declare that they have no conflict of interest.
 
 This work was supported by the Gordon and Betty Moore Foundation and by the NIH under grants R01HL150394, R01HL150394-SI, R01AI148747, and R01AI148747-SI.
 
+# Author Info
+
+**Kenneth Ge** is a research intern at the Beth Israel Deaconess Medical Center in Boston, MA, USA. He is also an undergraduate studying Computer Science at Carnegie Mellon University in Pittsburgh, PA, USA. He has previous research experience and publications in Human Computer Interaction and Accessible Computing and Machine Learning. 
+
+**Phuc Nguyen** received a B.S. degree in Physics from the University of Texas at Austin in 2010, and a Ph.D. degree in Physics from the University of Texas at Austin in 2017. From 2017 to 2023, he worked as a postdoctoral researcher in physics at the University of Maryland in College Park, the City University of New York, the University of Haifa in Israel and Brandeis University, with research interest spanning from high-energy physics (especially the AdS/CFT correspondence) to general relativity to quantum information science. He is a postdoctoral researcher at Beth Israel Deaconess Medical Center in Boston, MA, USA, with research interest focusing on information theory and machine learning.
+
+**Ramy Arnaout** received an S.B. degree in biology from the Massachusetts Institute of Technology in 1997, a D.Phil. (Ph.D.) degree in Mathematical Biology (Zoology) from the University of Oxford in 1999, and an M.D. degree with honors from Harvard Medical School in 2003. He is Associate Professor of Pathology at Harvard Medical School and Associate Director of the Clinical Microbiology Laboratories at the Beth Israel Deaconess Medical Center, both in Boston, MA, USA. His past and present research interests include entropy, diversity, immunomics, metagenomics, computational pathology, informatics, artificial intelligence, and machine learning. Dr. Arnaout is a member of the College of American Pathologists.
+
 # References
