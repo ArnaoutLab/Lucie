@@ -44,8 +44,6 @@ In our own work, we noticed that many of the problematic datasets, although diff
 
 ## Code and Datasets
 
-![The 100 most popular UCIMLR datasets, ordered by number of views and presented using a log10 scale. Green=datasets that *ucimlrepo* successfully imports; red=*ucimlrepo* failures. The UCIMLR ID# is displayed along with the name and rank. Note the correlation between success and popularity (more red bars toward the bottom).\label{fig:datasets}](./thedatasetsbyviews.pdf){height=80%}
-
 *ucimlrepo* version 0.0.7 was installed using pip (`pip install ucimlrepo`). We determined dataset popularity rankings based on the results given by the "sort by num views, desc" criteria on the UCIMLR (accessed August 26, 2024). After saving these results, we attempted to import each of the top 100 using *ucimlrepo*. This identified 16 that were non-importable: UCMLR IDs #5, 34, 51, 102, 113, 121, 125, 132, 137, 228, 236, 240, 280, 321, 331, and 502 (alphabetically).
 
 We downloaded these datasets using the download-as-zip function on the UCIMLR, and manually identified the following patterns in their construction:
@@ -57,6 +55,8 @@ We downloaded these datasets using the download-as-zip function on the UCIMLR, a
 * 1 dataset contained only extension-free files, some of which contained metadata and some of which contained tabular data stored in a delimiter-separated format.
 
 We concluded that if these patterns occurred at least once, there was a good chance they would occur again, i.e. in datasets beyond the top 100.
+
+![The 100 most popular UCIMLR datasets, ordered by number of views and presented using a log10 scale. Green=datasets that *ucimlrepo* successfully imports; red=*ucimlrepo* failures. The UCIMLR ID# is displayed along with the name and rank. Note the correlation between success and popularity (more red bars toward the bottom).\label{fig:datasets}](./thedatasetsbyviews.pdf){height=80%}
 
 We constructed our import algorithm to be as general as possible, while minimizing any false positives (which we define to be interpreting extraneous files as data). *lucie*'s import function returns a dictionary, with keys representing the names of any files identified as tabular data (including archives), and values being corresponding *pandas* dataframes. If that is not possible, as a fallback, it instead returns a dictionary representing the directory structure and its contained files for any identified data archives; however, in practice, no such failure mode was detected among the top 100 datasets. Finally, we also modified the `fetch_ucirepo` function to return a tuple, with the first element being `"uci"` or `"custom"`, representing whether the dataset was imported using the built-in function vs. our custom import algorithm, respectively. 
 
