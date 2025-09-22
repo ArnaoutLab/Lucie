@@ -25,7 +25,8 @@ import re
 
 def fetch_ucirepo(
         name: Optional[str] = None, 
-        id: Optional[int] = None
+        id: Optional[int] = None,
+        verbose: bool = False
     ):
     '''
     Loads a dataset from the UCI ML Repository, including the dataframes and metadata information.
@@ -33,6 +34,7 @@ def fetch_ucirepo(
     Parameters: 
         id (int): Dataset ID for UCI ML Repository
         name (str): Dataset name, or substring of name
+        verbose (bool): If True, prints detailed progress information during download and processing
         (Only provide id or name, not both)
 
     Returns:
@@ -86,15 +88,15 @@ def fetch_ucirepo(
     if not data_url:
 
         if id==132 or name=='movie':
-            return ('custom', special_case_download('movie'))
+            return ('custom', special_case_download('movie', verbose))
         elif id==34 or name=='diabetes':
-            return ('custom', special_case_download('diabetes'))
+            return ('custom', special_case_download('diabetes', verbose))
         elif id==137 or name=='reuters21578' or name=='reuters+21578+text+categorization+collection':
-            return ('custom', special_case_download('reuters'))
+            return ('custom', special_case_download('reuters', verbose))
         elif id==121 or name=='eeg+database':
-            return ('custom', special_case_download('eeg'))
+            return ('custom', special_case_download('eeg', verbose))
         
-        data = get_data(id, name)
+        data = get_data(id, name, verbose)
 
         if data is None:
             raise DatasetNotFoundError('"{}" dataset (id={}) exists in the repository, but is not available for import. Please select a dataset from this list: https://archive.ics.uci.edu/datasets?skip=0&take=10&sort=desc&orderBy=NumHits&search=&Python=true'.format(name, id))
@@ -174,7 +176,7 @@ import os
 from urllib.parse import urljoin
 import warnings
 
-def get_data(id, name):
+def get_data(id, name, verbose=False):
     # URL of the website you want to scrape
     url = f'https://archive.ics.uci.edu/dataset/{id}/{name}'
     
@@ -194,31 +196,37 @@ def get_data(id, name):
             download_link = download_link[0]
             # Get the href attribute (the URL the link points to)
             download_url = download_link['href']
-            print('Download link found:', download_url)
+            if verbose:
+                print('Download link found:', download_url)
             full_download_url = urljoin(url, download_url)
-            print('Download link:', full_download_url)
+            if verbose:
+                print('Download link:', full_download_url)
 
             file_name = os.path.basename(full_download_url)
             file_path = os.path.join(os.getcwd(), file_name)
 
-            clear_extract_folder()
+            clear_extract_folder(verbose)
             
             if os.path.exists(file_path):
-                warnings.warn('Using locally downloaded archive, since downloading can be very slow...')
-                return extract_and_get_path(file_path)
+                if verbose:
+                    warnings.warn('Using locally downloaded archive, since downloading can be very slow...')
+                return extract_and_get_path(file_path, verbose)
             
             # Send a GET request to the download URL
-            download_file(full_download_url, file_path)
+            download_file(full_download_url, file_path, verbose=verbose)
             
-            print(f'File downloaded and saved as: {file_path}')
+            if verbose:
+                print(f'File downloaded and saved as: {file_path}')
 
-            return extract_and_get_path(file_path)
+            return extract_and_get_path(file_path, verbose)
         else:
-            print('No download link found.')
+            if verbose:
+                print('No download link found.')
     else:
-        print(f'Failed to retrieve the webpage. Status code: {response.status_code}')
+        if verbose:
+            print(f'Failed to retrieve the webpage. Status code: {response.status_code}')
 
-def clear_extract_folder():
+def clear_extract_folder(verbose=False):
     import os, shutil
     
     folder = os.path.join(os.getcwd(), 'extracted_files')
@@ -239,20 +247,21 @@ def clear_extract_folder():
                 os.chmod(dir_path, 0o777)  # Ensure the directory is writable
                 shutil.rmtree(dir_path)  # Remove the directory
         except Exception as e:
-            print('Failed to delete %s. Reason: %s' % (file_path, e))
+            if verbose:
+                print('Failed to delete %s. Reason: %s' % (file_path, e))
 
 import zipfile
 import tarfile
 import gzip
 
-def extract_and_get_path(file_path):
+def extract_and_get_path(file_path, verbose=False):
     """
     Recursively extract nested archives until we get a file
     """
     extract_path = os.path.join(os.getcwd(), 'extracted_files')
     
     # Extract the archive
-    name_list = extract_archive(file_path, extract_path)
+    name_list = extract_archive(file_path, extract_path, verbose)
     # print('name list:', name_list)
     extracted_files = [os.path.join(extract_path, file) for file in name_list]
 
@@ -266,15 +275,18 @@ def extract_and_get_path(file_path):
     for file in extracted_files:
         #print(f'Extracted file: {file}')
         if file.endswith('.data'):
-            print(f'Returning {file}')
+            if verbose:
+                print(f'Returning {file}')
             table_files.append(file)
             #return file, False
         if file.endswith('.xlsx'):
-            print(f'Returning {file}')
+            if verbose:
+                print(f'Returning {file}')
             table_files.append(file)
             #return file, False
         if file.endswith('.csv'):
-            print(f'Returning {file}')
+            if verbose:
+                print(f'Returning {file}')
             table_files.append(file)
             #return file, True
         if is_archive(file):
@@ -299,7 +311,8 @@ def extract_and_get_path(file_path):
         return ret
             
     
-    print('Did not find any tabular/CSV data. Trying archives:', archives)
+    if verbose:
+        print('Did not find any tabular/CSV data. Trying archives:', archives)
     
     ret = None
 
@@ -315,20 +328,23 @@ def extract_and_get_path(file_path):
     sorted(archives, key=cmp_to_key(compare))
     
     for a in archives:
-        print('trying this archive:', a)
-        res = extract_and_get_path(a)
+        if verbose:
+            print('trying this archive:', a)
+        res = extract_and_get_path(a, verbose)
         if res is not None:
             return res
         else:
             if ret is None:
                 ret = []
-            print('trying JSON')
-            res = try_json_extraction(a)
+            if verbose:
+                print('trying JSON')
+            res = try_json_extraction(a, verbose=verbose)
             if res is not None:
                 ret.append(res)
 
     # try any txt files as CSV file
-    print('trying txt files')
+    if verbose:
+        print('trying txt files')
     delimiters = [None, ',', ';', '\t']
     backup = {}
     nasum = 1
@@ -358,7 +374,8 @@ def extract_and_get_path(file_path):
                 #print(e)
                 pass
     
-    print('trying files with no extension')
+    if verbose:
+        print('trying files with no extension')
     for t in extensionless_files:
         for d in delimiters:
             try:
@@ -385,12 +402,13 @@ def extract_and_get_path(file_path):
     # print('backup =?= {}', backup == {})
     
     if (not backup == {}) and (backup is not None):
-        print('returning backup')
+        if verbose:
+            print('returning backup')
         return backup
     
     return ret
 
-def extract_archive(file_path, extract_to):
+def extract_archive(file_path, extract_to, verbose=False):
     """Extract various types of archive files."""
     if file_path.endswith('.zip'):
         with zipfile.ZipFile(file_path, 'r') as zip_ref:
@@ -404,7 +422,8 @@ def extract_archive(file_path, extract_to):
         tar.close()
         return retlist
     elif file_path.endswith('.gz'):
-        print('handle .gz files')
+        if verbose:
+            print('handle .gz files')
         # .gz files usually contain a single file, so extract that
         with gzip.open(file_path, 'rb') as gz_ref:
             file_content = gz_ref.read()
@@ -422,7 +441,7 @@ def extract_archive(file_path, extract_to):
             file.write(uncompressed_data)
 
         if is_archive(inner_file):
-            return extract_archive(inner_file, extract_to)
+            return extract_archive(inner_file, extract_to, verbose)
         else:
             return [inner_file]
     else:
@@ -454,7 +473,7 @@ def read_csv(file, header=None, delimiter=None):
 
     return pd.read_csv(file, header=header, delimiter=delimiter, names=col_names)
 
-def try_json_extraction(archive, name_list=None):
+def try_json_extraction(archive, name_list=None, verbose=False):
     """
     Try to import dataset as a JSON, where each file 
     """
@@ -463,11 +482,12 @@ def try_json_extraction(archive, name_list=None):
     
     # Extract the archive
     if name_list is None:
-        name_list = extract_archive(archive, extract_path)
+        name_list = extract_archive(archive, extract_path, verbose)
     
     extracted_files = [os.path.join(extract_path, file) for file in name_list]
 
-    print('Attempting CSV import...')
+    if verbose:
+        print('Attempting CSV import...')
 
     from pathlib import Path
 
@@ -514,7 +534,8 @@ def try_json_extraction(archive, name_list=None):
 
     ret = {}
     # traverse root directory, and list directories as dirs and files as files
-    print('Fallback: returning JSON dir structure')
+    if verbose:
+        print('Fallback: returning JSON dir structure')
     start_idx = len(splitpath(start_folder))
     for root, dirs, files in os.walk(start_folder):
         path = splitpath(root)[start_idx-1:]
@@ -543,7 +564,7 @@ def read_gz_as_csv(gz_path):
         df = pd.read_csv(file, comment='#', sep=' ')
         return df
 
-def special_case_download(name):
+def special_case_download(name, verbose=False):
     if name == 'movie':
         base_url = 'https://cdn.jsdelivr.net/gh/cernoch/movies@latest/data'
         files = [
@@ -575,17 +596,18 @@ def special_case_download(name):
         delim=None
     elif name == 'eeg':
         """ For this dataset we use fully custom code """
-        clear_extract_folder()
+        clear_extract_folder(verbose)
         
         file_path = os.path.join(os.getcwd(), 'eeg+database.zip')
         if not os.path.exists(file_path):
-            download_file('https://archive.ics.uci.edu/static/public/121/eeg+database.zip', file_path)
+            download_file('https://archive.ics.uci.edu/static/public/121/eeg+database.zip', file_path, verbose=verbose)
             # print(f'File downloaded and saved as: {file_path}')
 
         extract_path = os.path.join(os.getcwd(), 'extracted_files')
 
-        print('extracting...')
-        extract_archive(file_path, extract_path)
+        if verbose:
+            print('extracting...')
+        extract_archive(file_path, extract_path, verbose)
         
         eeg_full_files = os.path.join(extract_path, 'eeg_full')
 
@@ -596,9 +618,10 @@ def special_case_download(name):
         
         # Print the files
         for file in files:
-            print('processing:', file)
+            if verbose:
+                print('processing:', file)
             resulting_path = os.path.join(extract_path, os.path.basename(file)[:-7])
-            name_list = extract_archive(os.path.join(eeg_full_files, file), extract_path)
+            name_list = extract_archive(os.path.join(eeg_full_files, file), extract_path, verbose)
             extracted_files = [os.path.join(extract_path, file) for file in name_list]
             
             ret[os.path.basename(file)] = dict()
@@ -622,7 +645,8 @@ def special_case_download(name):
         else:
             path = os.path.join(base_url, f)
             path = path.replace('\\', '/')
-            print('path:', path)
+            if verbose:
+                print('path:', path)
             ret[f] = pd.read_csv(path, on_bad_lines='skip', delimiter=delim)
 
     return ret
@@ -631,7 +655,7 @@ import requests
 from requests.exceptions import Timeout
 import time
 
-def download_file(url, file_path, connect_timeout=10, read_timeout=99999):
+def download_file(url, file_path, connect_timeout=10, read_timeout=99999, verbose=False):
     try:
         start_time = time.time()
         # Use a session to handle the request
@@ -650,6 +674,7 @@ def download_file(url, file_path, connect_timeout=10, read_timeout=99999):
                         file.write(chunk)
 
     except Exception as err:
-        print(err)
+        if verbose:
+            print(err)
         os.remove(file_path)
         raise Exception("Download timed out or " + f"another error occurred: {err}")
